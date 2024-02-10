@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:tuple/tuple.dart';
 
-import 'app_controller.dart';
-import 'qr_data_page.dart';
-import 'colors.dart';
+import '../controllers/app_controller.dart';
+import '../screens/qr_data_page.dart';
+import '../constants/colors.dart';
 
 dialogTextStyle(BuildContext context) => const TextStyle(fontSize: 24.0);
 elevatedButtonStyle(BuildContext context) =>
