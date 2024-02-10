@@ -5,7 +5,7 @@ import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 
 import 'app_controller.dart';
-import 'colors.dart';
+import '../constants/colors.dart';
 
 class QrController {
   QRViewController? controller;

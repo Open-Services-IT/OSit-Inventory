@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:tuple/tuple.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import 'app_controller.dart';
+import '../controllers/app_controller.dart';
 
 class DataPage extends StatelessWidget {
   const DataPage({super.key});
