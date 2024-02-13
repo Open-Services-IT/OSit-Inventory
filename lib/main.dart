@@ -24,7 +24,7 @@ class OSitInventoryApp extends StatelessWidget {
   const OSitInventoryApp({super.key});
   @override
   Widget build(BuildContext context) => GetBuilder<AppController>(
-        builder: (_) => MaterialApp(
+        builder: (_) => GetMaterialApp(
           debugShowCheckedModeBanner: false,
           theme: _.theme,
           home: HomePage(),

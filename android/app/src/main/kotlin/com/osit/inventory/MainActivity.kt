@@ -1,4 +1,4 @@
-package com.osit.inventory
+package com.osit.inventoryapp
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:osit_inventory/constants/dimens.dart';
 import 'package:osit_inventory/widgets/bottom_bar_item.dart';
 import 'package:osit_inventory/constants/colors.dart';
 import 'package:osit_inventory/widgets/dialogs.dart';
@@ -20,90 +21,91 @@ class HomePage extends StatelessWidget {
     return GetBuilder<AppController>(
       builder: (_) => Scaffold(
         appBar: AppBar(
-            centerTitle: true,
-            title: TextButton(
-              onPressed: () {
-                _.resetQrCode();
-              },
-              child: Text(
-                _.qrCode,
-                textScaleFactor: 1.4,
-                style: TextStyle(
-                  color: _.isDark ? Colors.white : Colors.black,
-                  decoration: TextDecoration.none,
-                ),
+          centerTitle: true,
+          title: GestureDetector(
+            onTap: _.resetQrCode,
+            child: Text(
+              _.qrCode,
+              textScaler: TextScaler.linear(
+                  (Dimens.screenWidth / 4) < 90 ? .8 : 1.25),
+              style: TextStyle(
+                color: _.isDark ? Colors.white : Colors.black,
+                decoration: TextDecoration.none,
               ),
             ),
-            backgroundColor: Colors.transparent,
-            elevation: 0.0,
-            systemOverlayStyle: const SystemUiOverlayStyle(
-              statusBarColor: Colors.transparent,
-            ),
-            leading: Obx(
-              () => Container(
-                padding: const EdgeInsets.symmetric(horizontal: 2),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    Expanded(
-                        flex: 1,
-                        child: IconButton(
-                          onPressed: () => mainWrapperController.goToTab(
-                              mainWrapperController.currentPage < 1 ? 1 : 0),
-                          icon: Icon(mainWrapperController.currentPage < 1
-                              ? Icons.nfc
-                              : Icons.qr_code_2),
-                          iconSize: 32,
-                        )),
-                    Expanded(
-                        flex: 1,
-                        child: Text(mainWrapperController.currentPage < 1
-                            ? 'NFC'
-                            : 'QR')),
-                  ],
-                ),
+          ),
+          backgroundColor: Colors.transparent,
+          elevation: 0.0,
+          systemOverlayStyle: const SystemUiOverlayStyle(
+            statusBarColor: Colors.transparent,
+          ),
+          leading: Obx(
+            () => Container(
+              // padding: const EdgeInsets.symmetric(horizontal: 2),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child: IconButton(
+                      onPressed: () => mainWrapperController.goToTab(
+                          mainWrapperController.currentPage < 1 ? 1 : 0),
+                      icon: Icon(
+                        mainWrapperController.currentPage < 1
+                            ? Icons.nfc
+                            : Icons.qr_code_2,
+                      ),
+                      iconSize: 32,
+                    ),
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: Text(
+                      mainWrapperController.title.value,
+                    ),
+                  ),
+                ],
               ),
             ),
-            leadingWidth: 90,
-            actions: [
-              Switch(
-                  activeColor: mainColor(context),
-                  value: _.isDark,
-                  onChanged: (val) {
-                    _.toggleTheme(dark: !_.isDark);
-                  }),
-              PopupMenuButton<int>(
-                  // add icon, by default "3 dot" icon
-                  // icon: Icon(Icons.book)
-                  itemBuilder: (context) {
-                return [
-                  const PopupMenuItem<int>(
-                    value: 0,
-                    child: Text("DB Params"),
-                  ),
-                  const PopupMenuItem<int>(
-                    value: 1,
-                    child: Text("User Preferences"),
-                  ),
-                  const PopupMenuDivider(),
-                  const PopupMenuItem<int>(
-                    value: 2,
-                    child: Text("About ..."),
-                  ),
-                ];
-              }, onSelected: (value) {
-                if (value == 0) {
-                  showDBConfig(context, _);
-                } else if (value == 1) {
-                  showPreferences(context, _);
-                  _.preferencesUpdated();
-                } else if (value == 2) {
-                  showAbout(context);
-                }
-              }),
-            ]),
+          ),
+          leadingWidth: Dimens.screenWidth / 4,
+          actions: [
+            Switch(
+                activeColor: mainColor(context),
+                value: _.isDark,
+                onChanged: (val) {
+                  _.toggleTheme(dark: !_.isDark);
+                }),
+            PopupMenuButton<int>(itemBuilder: (context) {
+              return [
+                const PopupMenuItem<int>(
+                  value: 0,
+                  child: Text("DB Params"),
+                ),
+                const PopupMenuItem<int>(
+                  value: 1,
+                  child: Text("User Preferences"),
+                ),
+                const PopupMenuDivider(),
+                const PopupMenuItem<int>(
+                  value: 2,
+                  child: Text("About ..."),
+                ),
+              ];
+            }, onSelected: (value) {
+              if (value == 0) {
+                showDBConfig(context, _);
+              } else if (value == 1) {
+                showPreferences(context, _);
+                _.preferencesUpdated();
+              } else if (value == 2) {
+                showAbout(context);
+              }
+            }),
+          ],
+        ),
         body: PageView(
           controller: mainWrapperController.pageController,
           physics: const NeverScrollableScrollPhysics(),

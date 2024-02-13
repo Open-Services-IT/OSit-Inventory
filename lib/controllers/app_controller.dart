@@ -31,6 +31,7 @@ class AppController extends GetxController {
 
   setNfcCode(String nfcCode) async  {
     try {
+      qrCode = nfcCode;
       map = await mysql.readQRData(nfcCode);
       update();
       if (store.msTimeout > 0) {
