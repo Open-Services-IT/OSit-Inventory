@@ -24,8 +24,8 @@ showAbout(BuildContext context) {
       // color: const Color.fromARGB(222, 255, 255, 255),
       // colorBlendMode: BlendMode.dstOut,
     ),
-    applicationName: 'OSit QRinvent',
-    applicationVersion: '0.0.1',
+    applicationName: 'OSit Invent',
+    applicationVersion: '1.0.0',
     applicationLegalese: '©2024 openServices.eus',
     children: <Widget>[
       Padding(

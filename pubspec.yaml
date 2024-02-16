@@ -2,7 +2,7 @@ name: osit_inventory
 description: "A new Flutter project."
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-version: 1.0.0+1
+version: 1.0.0+2
 
 environment:
   sdk: '>=3.2.5 <4.0.0'
@@ -12,7 +12,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   get:
   get_storage:
-  qr_code_scanner:
+  qr_code_scanner: ^1.0.1
   tuple:
   url_launcher:
   mysql_client:
@@ -25,7 +25,7 @@ dev_dependencies:
     sdk: flutter
   flutter_lints: ^2.0.0
   flutter_launcher_icons:
-#  flutter_native_splash:
+  flutter_native_splash:
 
 flutter:
   uses-material-design: true

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:osit_inventory/controllers/main_wrapper_controller.dart';
 import 'package:osit_inventory/controllers/nfc_controller.dart';
 import 'controllers/qr_controller.dart';
 
@@ -14,8 +15,8 @@ void main() async {
   Get
     ..put(QrController(), permanent: true)
     ..put(AppController(), permanent: true)
-    ..put(NfcController(), permanent: true)
-  ;
+    ..put(MainWrapperController(), permanent: true)
+    ..put(NfcController(), permanent: true);
 
   runApp(const OSitInventoryApp());
 }

@@ -50,8 +50,11 @@ class HomePage extends StatelessWidget {
                   Expanded(
                     flex: 1,
                     child: IconButton(
-                      onPressed: () => mainWrapperController.goToTab(
-                          mainWrapperController.currentPage < 1 ? 1 : 0),
+                      onPressed: () {
+                        mainWrapperController.goToTab(
+                            mainWrapperController.currentPage < 1 ? 1 : 0);
+                        _.resetQrCode();
+                      },
                       icon: Icon(
                         mainWrapperController.currentPage < 1
                             ? Icons.nfc
