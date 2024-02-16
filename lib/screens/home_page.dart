@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:osit_inventory/constants/dimens.dart';
+import 'package:osit_inventory/controllers/nfc_controller.dart';
+import 'package:osit_inventory/controllers/qr_controller.dart';
 import 'package:osit_inventory/widgets/bottom_bar_item.dart';
 import 'package:osit_inventory/constants/colors.dart';
 import 'package:osit_inventory/widgets/dialogs.dart';
@@ -27,7 +29,7 @@ class HomePage extends StatelessWidget {
             child: Text(
               _.qrCode,
               textScaler: TextScaler.linear(
-                  (Dimens.screenWidth / 4) < 90 ? .8 : 1.25),
+                  (MediaQuery.of(context).size.width / 4) < 90 ? .8 : 1.25),
               style: TextStyle(
                 color: _.isDark ? Colors.white : Colors.black,
                 decoration: TextDecoration.none,
@@ -40,7 +42,15 @@ class HomePage extends StatelessWidget {
             statusBarColor: Colors.transparent,
           ),
           leading: Obx(
-            () => Container(
+            () => GestureDetector(
+              onTap: () {
+                mainWrapperController
+                    .goToTab(mainWrapperController.currentPage < 1 ? 1 : 0);
+                _.resetQrCode();
+                mainWrapperController.currentPage < 1
+                    ? NfcController().dispose()
+                    : QrController().dispose();
+              },
               // padding: const EdgeInsets.symmetric(horizontal: 2),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -49,18 +59,11 @@ class HomePage extends StatelessWidget {
                 children: [
                   Expanded(
                     flex: 1,
-                    child: IconButton(
-                      onPressed: () {
-                        mainWrapperController.goToTab(
-                            mainWrapperController.currentPage < 1 ? 1 : 0);
-                        _.resetQrCode();
-                      },
-                      icon: Icon(
-                        mainWrapperController.currentPage < 1
-                            ? Icons.nfc
-                            : Icons.qr_code_2,
-                      ),
-                      iconSize: 32,
+                    child: Icon(
+                      mainWrapperController.currentPage < 1
+                          ? Icons.nfc
+                          : Icons.qr_code_2,
+                      size: 32,
                     ),
                   ),
                   Expanded(
@@ -73,7 +76,9 @@ class HomePage extends StatelessWidget {
               ),
             ),
           ),
-          leadingWidth: Dimens.screenWidth / 4,
+          leadingWidth: MediaQuery.of(context).size.width > 500
+              ? 90
+              : MediaQuery.of(context).size.width / 4,
           actions: [
             Switch(
                 activeColor: mainColor(context),
