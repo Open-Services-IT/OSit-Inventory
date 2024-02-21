@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tuple/tuple.dart';
@@ -34,7 +35,9 @@ class DataPage extends StatelessWidget {
                         width: double.infinity,
                         alignment: Alignment.center,
                         margin: const EdgeInsets.symmetric(
-                            vertical: 10, horizontal: 60), //.all(20.0),
+                          vertical: 10,
+                          horizontal: 60,
+                        ), //.all(20.0),
                         child: ListView.builder(
                             //itemExtent: 90,
                             shrinkWrap: true,
@@ -51,10 +54,6 @@ class DataPage extends StatelessWidget {
                                 subtitle: _buildValue(code, url),
                                 visualDensity: VisualDensity.compact,
                                 dense: true,
-                                //minVerticalPadding: 0,
-                                // tileColor: Theme.of(context)
-                                //     .bottomAppBarColor
-                                //     .withAlpha(100),
                               );
                             }),
                       );
@@ -82,29 +81,35 @@ class DataPage extends StatelessWidget {
         textStyle = const TextStyle(color: Colors.deepPurpleAccent);
         break;
       default:
-        textStyle = null;
+        textStyle = const TextStyle(fontSize: 18);
     }
-    var scale = 1.5;
+    var scale = AppController().store.size;
 
     return Transform.translate(
         offset: const Offset(0, 0),
         child: Text(
           key,
-          textScaleFactor: scale,
+          textScaler: TextScaler.linear(double.parse(scale)),
           //maxLines: 1,
           softWrap: true,
           overflow: TextOverflow.visible,
-          style: textStyle,
+          style: textStyle!.merge(
+            const TextStyle(fontWeight: FontWeight.bold),
+          ),
+          textAlign: key == key.toUpperCase() ? TextAlign.center : null,
         ));
   }
 }
 
 Widget _buildValue(String code, bool url) {
+  var scale = AppController().store.size;
   if (url) {
     return UrlButton(code, 1);
   } else {
     return Text(
       code,
+      style: const TextStyle(fontSize: 15),
+      textScaler: TextScaler.linear(double.parse(scale)),
     );
   }
 }

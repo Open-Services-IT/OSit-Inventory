@@ -22,18 +22,6 @@ class Mysql {
 
   Future<Map<String, Tuple2<String, String>>> readQRData(String qrCode) async {
     Map<String, Tuple2<String, String>> map = {};
-    var SQLmonitor = """select 
-      services.description, 
-      services.output,
-      services.last_hard_state,
-      hosts.address
-      FROM services, hosts 
-      WHERE services.host_id = hosts.host_id 
-      AND (from_unixtime(services.last_check) >= NOW() - INTERVAL 1 WEEK) 
-      AND hosts.name = :qrcode
-      ORDER BY services.description ASC, 
-      services.last_check DESC""";
-
     var SQLinvent = """
 SELECT 'INFO' AS Tipo, '<<' AS Valor
 UNION SELECT 'Nombre' AS Tipo, hardware.name AS Valor FROM hardware WHERE NAME=:qrcode
