@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:osit_inventory/controllers/nfc_controller.dart';
@@ -15,7 +16,7 @@ class NfcScreen extends StatelessWidget {
         key: _scaffoldKey,
         backgroundColor: Colors.transparent,
         body: Obx(
-              () => Stack(
+          () => Stack(
             children: [
               if ((nfcController.nfcStatus !=
                   nfcController.nfcAvailabilityState['available']))
@@ -26,8 +27,8 @@ class NfcScreen extends StatelessWidget {
                         MediaQuery.of(context).size.width > 500
                             ? 2.5
                             : (MediaQuery.of(context).size.width / 4) < 90
-                            ? .8
-                            : 1.3),
+                                ? .8
+                                : 1.3),
                     style: TextStyle(
                       color: _.isDark ? Colors.white : Colors.black,
                       decoration: TextDecoration.none,
@@ -43,7 +44,7 @@ class NfcScreen extends StatelessWidget {
                 ),
               ),
               const DataPage(),
-              if (_.map.isEmpty)
+              if (_.map.isEmpty && defaultTargetPlatform == TargetPlatform.iOS)
                 Positioned(
                   top: 10,
                   left: 10,
