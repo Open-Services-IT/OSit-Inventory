@@ -1,22 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:osit_inventory/constants/dimens.dart';
+import 'package:osit_inventory/controllers/app_controller.dart';
 import 'package:osit_inventory/controllers/nfc_controller.dart';
 import 'package:osit_inventory/controllers/qr_controller.dart';
-import 'package:osit_inventory/widgets/bottom_bar_item.dart';
 import 'package:osit_inventory/constants/colors.dart';
+import 'package:osit_inventory/screens/qr_screen.dart';
 import 'package:osit_inventory/widgets/dialogs.dart';
 import 'package:osit_inventory/controllers/main_wrapper_controller.dart';
 import 'package:osit_inventory/screens/nfc_screen.dart';
-
-import '../controllers/app_controller.dart';
-import 'qr_screen.dart';
 
 class HomePage extends StatelessWidget {
   HomePage({super.key});
   final MainWrapperController mainWrapperController =
       Get.put(MainWrapperController());
+  final NfcController nfcController = Get.put(NfcController());
+  final QrController qrController = Get.put(QrController());
 
   @override
   Widget build(BuildContext context) {
@@ -29,10 +28,11 @@ class HomePage extends StatelessWidget {
             child: Text(
               _.qrCode,
               textScaler: TextScaler.linear(
-                  (MediaQuery.of(context).size.width / 4) < 90 ? .8 : 1.25),
+                  MediaQuery.of(context).size.width < 375 ? .95 : 1.25),
               style: TextStyle(
                 color: _.isDark ? Colors.white : Colors.black,
                 decoration: TextDecoration.none,
+                fontSize: 18,
               ),
             ),
           ),
@@ -47,38 +47,37 @@ class HomePage extends StatelessWidget {
                 mainWrapperController
                     .goToTab(mainWrapperController.currentPage < 1 ? 1 : 0);
                 _.resetQrCode();
-                mainWrapperController.currentPage < 1
-                    ? NfcController().dispose()
-                    : QrController().dispose();
               },
-              // padding: const EdgeInsets.symmetric(horizontal: 2),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  Expanded(
-                    flex: 1,
-                    child: Icon(
-                      mainWrapperController.currentPage < 1
-                          ? Icons.nfc
-                          : Icons.qr_code_2,
-                      size: 32,
+              child: Container(
+                padding: EdgeInsets.only(
+                  left: MediaQuery.of(context).size.width < 375 ? 2 : 10,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Expanded(
+                      flex: 1,
+                      child: Icon(
+                        mainWrapperController.currentPage < 1
+                            ? Icons.nfc
+                            : Icons.qr_code_2,
+                        size: 32,
+                      ),
                     ),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: Text(
-                      mainWrapperController.title.value,
+                    Expanded(
+                      flex: 1,
+                      child: Text(
+                        mainWrapperController.title.value,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),
-          leadingWidth: MediaQuery.of(context).size.width > 500
-              ? 90
-              : MediaQuery.of(context).size.width / 4,
+          leadingWidth: MediaQuery.of(context).size.width > 375 ? 80 : 70,
           actions: [
             Switch(
                 activeColor: mainColor(context),
@@ -122,40 +121,6 @@ class HomePage extends StatelessWidget {
             NfcScreen(),
           ],
         ),
-        // TODO move to /widgets
-        // bottomNavigationBar: BottomAppBar(
-        //   padding: const EdgeInsets.symmetric(horizontal: 15),
-        //   elevation: 0,
-        //   notchMargin: 10,
-        //   height: 60,
-        //   child: Row(
-        //     crossAxisAlignment: CrossAxisAlignment.center,
-        //     mainAxisSize: MainAxisSize.max,
-        //     children: [
-        //       Expanded(
-        //         flex: 12,
-        //         child: CustomBottomBarItem(
-        //           icon: Icons.qr_code,
-        //           text: 'QR',
-        //           onCustomTap: () => mainWrapperController.goToTab(0),
-        //         ),
-        //       ),
-        //       Container(
-        //         width: 1,
-        //         margin: const EdgeInsets.symmetric(vertical: 10),
-        //         color: Colors.purple,
-        //       ),
-        //       Expanded(
-        //         flex: 12,
-        //         child: CustomBottomBarItem(
-        //           icon: Icons.nfc,
-        //           text: 'NFC',
-        //           onCustomTap: () => mainWrapperController.goToTab(1),
-        //         ),
-        //       ),
-        //     ],
-        //   ),
-        // ),
       ),
     );
   }

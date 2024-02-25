@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +6,6 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:flutter_nfc_kit/flutter_nfc_kit.dart';
 import 'package:ndef/record.dart';
-import 'package:nfc_manager/nfc_manager.dart';
 import 'package:osit_inventory/constants/strings.dart';
 import 'package:osit_inventory/controllers/app_controller.dart';
 import 'package:osit_inventory/helpers/utils.dart';
@@ -36,7 +34,6 @@ class NfcController extends GetxController {
         }
       }
     }).catchError((error) {
-      // setNfcStatus = error.toString();
       AppUtils.showSnackBar("Ocurrio un error", SnackType.ERROR);
       AppUtils.printLog(error.toString());
     });
@@ -54,8 +51,10 @@ class NfcController extends GetxController {
     super.onInit();
     getNfcAvailability();
     if (defaultTargetPlatform == TargetPlatform.android) {
-      timer = Timer.periodic(const Duration(seconds: 15), (Timer t) {
-        startNFCReading();
+      timer = Timer.periodic(const Duration(seconds: 2), (Timer t) {
+        if (AppController().qrCode.isEmpty && !AppController().error) {
+          startNFCReading();
+        }
       });
     }
   }
@@ -74,29 +73,21 @@ class NfcController extends GetxController {
         List<String?> extractedCharacters =
             matches.map((match) => match.group(1)).toList();
         String extractedCharactersString = extractedCharacters.join(', ');
-        debugPrint(extractedCharactersString);
+        AppUtils.printLog("NFC tag: $extractedCharactersString");
         FlutterNfcKit.finish().then((value) {
-          appController.setNfcCode(extractedCharactersString);
+          // setLoading = true;
+          appController
+              .setNfcCode(extractedCharactersString)
+              .then((res) => {AppUtils.printLog('readed ok')})
+              .catchError((ex) => {AppUtils.printLog('readed with error')});
         }).catchError((error) {
-          AppUtils.showSnackBar(
-              "Ocurrio un error al leer el tag NFC", SnackType.ERROR);
-          debugPrint(error.toString());
+          AppUtils.printLog(error.toString());
         });
       }
     } catch (e) {
-      debugPrint(e.toString());
       PlatformException error = e as PlatformException;
-      if (error.code == '406') {
-        if (retry == 0) {
-          FlutterNfcKit.finish().then((value) {
-            startNFCReading();
-            retry++;
-          }).catchError((error) {
-            AppUtils.showSnackBar(
-                "Ocurrio un error al leer el tag NFC", SnackType.ERROR);
-            debugPrint(error.toString());
-          });
-        }
+      if (error.message == 'Connection timed out') {
+        AppUtils.printLog(error);
       }
     }
   }

@@ -39,8 +39,8 @@ class NfcScreen extends StatelessWidget {
                 bottom: 10,
                 right: 7,
                 child: Image.asset(
-                  'assets/logo.png',
-                  scale: 7,
+                  'assets/splash_screen/OSLogo.png',
+                  scale: 15,
                 ),
               ),
               const DataPage(),

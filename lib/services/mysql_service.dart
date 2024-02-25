@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:mysql_client/mysql_client.dart';
+import 'package:osit_inventory/helpers/utils.dart';
 import 'package:tuple/tuple.dart';
 
 import 'app_storage.dart';
@@ -9,20 +10,26 @@ class Mysql {
   final store = AppStorage();
 
   Future<MySQLConnection> getConnection() async {
-    final conn = await MySQLConnection.createConnection(
+    try {
+      final conn = await MySQLConnection.createConnection(
         host: store.host,
         port: store.port,
         userName: store.user,
         password: store.password,
         databaseName: store.database,
-        secure: false);
-    await conn.connect();
-    return conn;
+        secure: false,
+      );
+      await conn.connect();
+      return conn;
+    } catch (ex) {
+      // AppUtils.printLog("getConnection $ex");
+      rethrow;
+    }
   }
 
   Future<Map<String, Tuple2<String, String>>> readQRData(String qrCode) async {
     Map<String, Tuple2<String, String>> map = {};
-    var SQLinvent = """
+    String SQLinvent = """
 SELECT 'INFO' AS Tipo, '<<' AS Valor
 UNION SELECT 'Nombre' AS Tipo, hardware.name AS Valor FROM hardware WHERE NAME=:qrcode
 UNION SELECT 'Dirección IP' AS Tipo, hardware.ipsrc AS Valor FROM hardware WHERE NAME=:qrcode
@@ -130,33 +137,31 @@ WHERE
  h.name = :qrcode
 ;""";
     try {
-      var conn = await getConnection();
-      //centreon_storage.hosts.name
-      log('${DateTime.now().toIso8601String()}_readQRData $qrCode');
+      MySQLConnection conn = await getConnection();
+      if (conn.connected) {
+        AppUtils.printLog(
+            '${DateTime.now().toIso8601String()}_readQRData $qrCode');
 
-      // 1 query
-      var result = await conn.execute(SQLinvent, {"qrcode": qrCode});
-      log('${DateTime.now().toIso8601String()} result.rows ${result.rows.length}');
+        // 1 query
+        IResultSet result = await conn.execute(SQLinvent, {"qrcode": qrCode});
+        log('${DateTime.now().toIso8601String()} result.rows ${result.rows.length}');
 
-      for (final row in result.rows) {
-        print(row.colAt(0));
-        // print(row.colByName("title"));
-
-        // print all rows as Map<String, String>
-        // print(row.assoc());
-        // map['Dirección IP'] = Tuple2('${row.colAt(3)}', "0");
-        if (row.colAt(1) == '<<') {
-          String line = '${row.colAt(0)}';
-          map[line] = Tuple2('', '0');
-        } else {
-          map['${row.colAt(0)}'] = Tuple2('${row.colAt(1)}', '0');
+        for (final row in result.rows) {
+          AppUtils.printLog(row.colAt(0));
+          if (row.colAt(1) == '<<') {
+            String line = '${row.colAt(0)}';
+            map[line] = Tuple2('', '0');
+          } else {
+            map['${row.colAt(0)}'] = Tuple2('${row.colAt(1)}', '0');
+          }
         }
+        conn.close();
       }
-
-      conn.close();
     } catch (e) {
-      map = {'ERROR': Tuple2(e.toString(), '2')}; //2 COlor ROJO
-      log('${DateTime.now().toIso8601String()} ERROR $e');
+      // AppUtils.printLog('${DateTime.now().toIso8601String()} ERROR $e');
+      // AppUtils.printLog(e);
+      // map = {'ERROR': Tuple2(e.toString(), '2')};
+      rethrow;
     }
 
     return Future(() {
