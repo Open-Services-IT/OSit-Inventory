@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "539206024985",
+    "project_id": "osit-inventory-dev",
+    "storage_bucket": "osit-inventory-dev.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:539206024985:android:b06fd74ef0ed3a0ffd8f88",
+        "android_client_info": {
+          "package_name": "com.osit.inventoryapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA0vThreRGxwwomlnSsSyV-t8d3d3akhb0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
