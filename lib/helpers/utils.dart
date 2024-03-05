@@ -203,9 +203,12 @@ abstract class AppUtils {
     getVersion();
   }
 
-  static bool isAllCapitalizedWithSecondColon({required String word}) {
+  static bool showCentered({required String word}) {
     // Check if the word is the same as its uppercase version
     // and if the second letter is ":"
+    if(word.toUpperCase() == 'cpu'){
+      return false;
+    }
     return word == word.toUpperCase() && word.length >= 2 && word[1] != ':';
   }
 }

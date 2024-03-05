@@ -124,13 +124,24 @@ showPreferences(
 ) {
   var entries = <Tuple3<String, Function, TextEditingController>>[
     Tuple3(
-        'Timeout (ms)',
-        (val) => ctrl.store.msTimeout = int.tryParse(val.text) ?? 3000,
-        TextEditingController(text: ctrl.store.msTimeout.toString())),
-    Tuple3('Color', (val) => ctrl.store.color = val.text.trim(),
-        TextEditingController(text: ctrl.store.color)),
-    Tuple3('Size', (val) => ctrl.store.size = val.text.trim(),
-        TextEditingController(text: ctrl.store.size.toString())),
+      'Timeout (s)',
+      (val) => ctrl.store.secsTimeout = int.tryParse(val.text) ?? 30,
+      TextEditingController(
+        text: ctrl.store.secsTimeout.toString(),
+      ),
+    ),
+    Tuple3(
+      'Color',
+      (val) => ctrl.store.color = val.text.trim(),
+      TextEditingController(text: ctrl.store.color),
+    ),
+    Tuple3(
+      'Size',
+      (val) => ctrl.store.size = val.text.trim(),
+      TextEditingController(
+        text: ctrl.store.size.toString(),
+      ),
+    ),
   ];
 
   showDataConfig(context, "User Preferences", entries);
@@ -196,39 +207,40 @@ showDataConfig(
                 ],
                 const SizedBox(height: 15.0),
                 Container(
-                    decoration: BoxDecoration(
-                      color: colorAux,
-                      borderRadius: const BorderRadius.only(
-                          bottomLeft: radio, bottomRight: radio),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          ElevatedButton(
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                              style: elevatedButtonCancel(context),
-                              child: Text(
-                                "Cancel",
-                                style: elevatedButtonCancelText(context),
-                              )),
-                          const SizedBox(width: 10),
-                          ElevatedButton(
+                  decoration: BoxDecoration(
+                    color: colorAux,
+                    borderRadius: const BorderRadius.only(
+                        bottomLeft: radio, bottomRight: radio),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        ElevatedButton(
                             onPressed: () {
-                              for (var i = 0; i < entries.length; i++) {
-                                entries[i].item2(entries[i].item3.value);
-                              }
                               Navigator.of(context).pop();
                             },
-                            style: elevatedButtonStyle(context),
-                            child: const Text("Confirm"),
-                          ),
-                        ],
-                      ),
-                    )),
+                            style: elevatedButtonCancel(context),
+                            child: Text(
+                              "Cancel",
+                              style: elevatedButtonCancelText(context),
+                            )),
+                        const SizedBox(width: 10),
+                        ElevatedButton(
+                          onPressed: () {
+                            for (var i = 0; i < entries.length; i++) {
+                              entries[i].item2(entries[i].item3.value);
+                            }
+                            Navigator.of(context).pop();
+                          },
+                          style: elevatedButtonStyle(context),
+                          child: const Text("Confirm"),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
               ],
             ),
           ),

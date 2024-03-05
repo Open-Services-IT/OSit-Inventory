@@ -20,7 +20,9 @@ class DataPage extends StatelessWidget {
               return const Text("there is no connection");
             case ConnectionState.active:
             case ConnectionState.waiting:
-              return const Center(child: CircularProgressIndicator());
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
             case ConnectionState.done:
               if (snapshot.data != null) {
                 Map<String, Tuple2<String, String>>? myMap =
@@ -35,22 +37,37 @@ class DataPage extends StatelessWidget {
                     vertical: 10,
                     horizontal: 20,
                   ), //.all(20.0),
-                  child: _.loading ? const Center(child: CircularProgressIndicator()) : ListView.builder(
-                      //itemExtent: 90,
-                      shrinkWrap: true,
-                      itemCount: keysList?.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        var key = keysList![index];
-                        var code = myMap![keysList[index]]!.item1;
-                        var color = int.parse(myMap[keysList[index]]!.item2);
-                        var url = Uri.tryParse(code)?.host.isNotEmpty ?? false;
-                        return ListTile(
-                          title: _buildTitle(key, color),
-                          subtitle: _buildValue(code, url, color),
-                          visualDensity: VisualDensity.compact,
-                          dense: true,
-                        );
-                      }),
+                  child: _.loading
+                      ? const Center(
+                          child: CircularProgressIndicator(),
+                        )
+                      : ListView.builder(
+                          //itemExtent: 90,
+                          shrinkWrap: true,
+                          itemCount: keysList?.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            var key = keysList![index];
+                            var code = myMap![keysList[index]]!.item1;
+                            var color = int.parse(
+                              myMap[keysList[index]]!.item2,
+                            );
+                            var url =
+                                Uri.tryParse(code)?.host.isNotEmpty ?? false;
+                            return ListTile(
+                              title: _buildTitle(
+                                key,
+                                color,
+                              ),
+                              subtitle: _buildValue(
+                                code,
+                                url,
+                                color,
+                              ),
+                              visualDensity: VisualDensity.compact,
+                              dense: true,
+                            );
+                          },
+                        ),
                 );
               }
               // here your snapshot data is null so SharedPreferences has no data...
@@ -93,9 +110,7 @@ class DataPage extends StatelessWidget {
         style: textStyle.merge(
           const TextStyle(fontWeight: FontWeight.bold),
         ),
-        textAlign: AppUtils.isAllCapitalizedWithSecondColon(word: key)
-            ? TextAlign.center
-            : null,
+        textAlign: AppUtils.showCentered(word: key) ? TextAlign.center : null,
       ),
     );
   }
@@ -144,27 +159,27 @@ class LinkButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextButton(
-        style: TextButton.styleFrom(
-            padding: EdgeInsets.zero,
-            minimumSize: Size(50, 15),
-            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-            alignment: Alignment.topLeft),
-        onPressed: () async {
-          final Uri toLaunch = Uri.parse(uri);
-          if (!await launchUrl(toLaunch,
-              mode: LaunchMode.externalApplication)) {
-            throw Exception('Could not launch $uri');
-          }
-        },
-        child: Text(
-          text,
-          textScaleFactor: scale,
-          //maxLines: 2,
-          //softWrap: true,
-          overflow: TextOverflow.visible,
-          style: TextStyle(
-              decorationColor: Colors.blue[200],
-              decoration: TextDecoration.underline),
-        ));
+      style: TextButton.styleFrom(
+          padding: EdgeInsets.zero,
+          minimumSize: const Size(50, 15),
+          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          alignment: Alignment.topLeft),
+      onPressed: () async {
+        final Uri toLaunch = Uri.parse(uri);
+        if (!await launchUrl(toLaunch, mode: LaunchMode.externalApplication)) {
+          throw Exception('Could not launch $uri');
+        }
+      },
+      child: Text(
+        text,
+        textScaleFactor: scale,
+        //maxLines: 2,
+        //softWrap: true,
+        overflow: TextOverflow.visible,
+        style: TextStyle(
+            decorationColor: Colors.blue[200],
+            decoration: TextDecoration.underline),
+      ),
+    );
   }
 }
