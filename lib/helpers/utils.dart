@@ -204,8 +204,6 @@ abstract class AppUtils {
   }
 
   static bool showCentered({required String word}) {
-    // Check if the word is the same as its uppercase version
-    // and if the second letter is ":"
     if(word.toUpperCase() == 'cpu'){
       return false;
     }

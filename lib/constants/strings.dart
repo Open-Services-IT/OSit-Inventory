@@ -1,6 +1,5 @@
 
 
-import 'package:osit_inventory/helpers/utils.dart';
 
 abstract class StringValues {
   static const appName = 'OSit Inventory';
