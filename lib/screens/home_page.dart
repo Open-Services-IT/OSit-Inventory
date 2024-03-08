@@ -77,7 +77,7 @@ class HomePage extends StatelessWidget {
               ),
             ),
           ),
-          leadingWidth: MediaQuery.of(context).size.width > 375 ? 80 : 70,
+          leadingWidth: MediaQuery.of(context).size.width > 375 ? 82 : 70,
           actions: [
             Switch(
                 activeColor: mainColor(context),
