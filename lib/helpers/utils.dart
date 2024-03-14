@@ -204,7 +204,10 @@ abstract class AppUtils {
   }
 
   static bool showCentered({required String word}) {
-    if(word.toUpperCase() == 'cpu'){
+    RegExp hardwareModelPattern = RegExp(r'^[A-Z]+\s[A-Z0-9]+\s[0-9]+$');
+    if(word.toUpperCase() == 'CPU' || word.toUpperCase() == 'LLVM'){
+      return false;
+    } else if (hardwareModelPattern.hasMatch(word)) {
       return false;
     }
     return word == word.toUpperCase() && word.length >= 2 && word[1] != ':';
