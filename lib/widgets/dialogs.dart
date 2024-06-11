@@ -7,7 +7,7 @@ import '../constants/colors.dart';
 
 dialogTextStyle(BuildContext context) => const TextStyle(fontSize: 24.0);
 elevatedButtonStyle(BuildContext context) =>
-    ElevatedButton.styleFrom(backgroundColor: mainColor(context));
+    ElevatedButton.styleFrom(backgroundColor: mainColor(context),foregroundColor: Colors.white);
 elevatedButtonCancel(context) =>
     ElevatedButton.styleFrom(backgroundColor: Colors.white);
 elevatedButtonCancelText(BuildContext context) =>
