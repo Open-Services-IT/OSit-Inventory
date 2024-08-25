@@ -1,24 +1,29 @@
-# OSit QRinvent
+# OSit Inventory
 
-OSit QRinvent es una app que funciona en Android y permite escanear códigos QR que tengamos pegados en los elementos core de nuestra organización, sea en equipos de sobremesa, portátiles, servidores, cabinas de almacenamiento... con el objetivo de visualizar en tiempo real sus datos de inventario hardware o software.
+OSit Inventory es una app gratuita que funciona en Android e iOS y permite escanear códigos QR y etiquetas NFC que tengamos pegados en los elementos core de nuestra organización, sea en equipos de sobremesa, portátiles, servidores, cabinas de almacenamiento... con el objetivo de visualizar en tiempo real sus datos de inventario hardware o software.
 
-OSit QRinvent obtiene la información del sistema de inventario OCS Inventory NG, por tanto, si dispones de tu infraestructura inventariada (y eres feliz) podrás bajarte la app y usarla de manera gratuita YA. Es una app de código abierto, no tiene publicidad y viene sin soporte.
+OSit Inventory obtiene la información del sistema de inventario OCS Inventory NG, por tanto, si dispones de tu infraestructura inventariada (y eres feliz) podrás bajarte la app y usarla de manera gratuita en tus móviles o tablets. Es una app de código abierto, no tiene publicidad y viene sin soporte.
 
-OSit QRinvent tiene una hermana llamada OSit QRmonitor que muestra datos de monitorización en tiempo real, más info: https://github.com/srlopez/qrinvent
+OSit Inventory tiene una hermana gemela llamada OSit , en su caso muestra datos de monitorización en tiempo real, más info: https://github.com/Open-Services-IT/OSit-Monitor
 
 ## Cómo funciona
 
-Es muy simple, al abrir la app directamente mostrará la cámara del Android, con ella escanearemos un código QR que tengamos pegado en un dispositivo inventariador con OCS Inventory. En el momento de leer el código QR mostrará en pantalla un inventario completo con todo el hardware y el software del equipo escaneado.
+Es muy simple, al abrir la app directamente mostrará la cámara de tu teléfono móvil o de tu tablet, con Android o iOS, con ella escanearemos un código QR que tengamos pegado en un dispositivo inventariado con OCS Inventory. En el momento de leer el código QR mostrará en pantalla un inventario completo con todo el hardware y el software del equipo escaneado. Y si preferimos escanear una etiqueta NFC, bastará con pulsar el icono del NFC en la app y se quitará la cámara y quedará listo para acercar nuestro dispositivo móvil a la etiqueta NFC y ver los datos en pantalla.
 
 ## Qué necesitamos
 
 Podremos usar cualquier generador de códigos QR para las pegatinas, como puedan ser webs que ofrecen dicho servicio gratuito. Al generar los códigos QR, tendremos que tener en cuenta que cada código QR devolverá una palabra únicamente, siendo esta, el nombre de su equipo en OCS Inventory.
 
-La versión inicial de OSit QRinvent (v. 0.0.1) sólo permite conectar a OCS Inventory mediante una conexión MySQL, por tanto, será necesario crear un usuario de lectura en la BD de OCS Inventory y tener conectividad a ella.
+Las etiquetas NFC igualmente deberán llevar una cadena de texto con el nombre del equipo en OCS Inventory. Podremos comprar pequeñas etiquetas escribibles NFC por pocos céntimos en Internet, y escribirlas con cualquier app que encontremos en los Stores de Apple o Android.
+
+Si usamos una impresora de pegatinas, podremos imprimir y pegar el QR sobre la etiqueta NFC para tenerlo todo junto.
+
+La versión inicial de OSit Inventory sólo permite conectar a OCS Inventory mediante una conexión MariaDB/MySQL, por tanto, será necesario crear un usuario de lectura en la BD de OCS Inventory y tener conectividad a ella.
+
 
 ## Qué podemos ver
 
-Como indicamos, al escanear un código QR se mostrará en pantalla todo el hardware y software de dicha máquina. Gracias a OCS Inventory NG sabemos que podemos tener un inventario actualizado de cualquier componente hardware o software instalado en nuestras máquinas, pues ahora, lo podemos ver en tiempo real y desde cualquier sitio, delante de un equipo, de un servidor y conocer cualquier detalle que necesitemos de su hardware, como pueda ser qué discos tiene, su capacidad, su número de serie, o cuántos módulos de memoria RAM tiene ocupados, o si tiene un software instalado y qué versión.
+Como indicamos, al escanear un código QR o una etiqueta NFC se mostrará en pantalla todo el hardware y software de dicha máquina. Gracias a OCS Inventory NG sabemos que podemos tener un inventario actualizado de cualquier componente hardware o software instalado en nuestras máquinas, pues ahora, lo podemos ver en tiempo real y desde cualquier sitio, delante de un equipo, de un servidor y conocer cualquier detalle que necesitemos de su hardware, como pueda ser qué discos tiene, su capacidad, su número de serie, o cuántos módulos de memoria RAM tiene ocupados, o si tiene un software instalado y qué versión.
 
 - Información genérica:
 - Nombre del equipo.
@@ -68,10 +73,10 @@ Como indicamos, al escanear un código QR se mostrará en pantalla todo el hardw
 - Modelo.
 - Memoria.
 - Resolución.
-*   Monitores:
+*   es:
 - Modelo.
 - Número de serie.
-- Tipo monitor.
+- Tipo .
 - Descripción.
 *   Impresoras:
 - Nombre de impresora.
@@ -89,41 +94,63 @@ Como indicamos, al escanear un código QR se mostrará en pantalla todo el hardw
 
 ### Requisitos en OCS Inventory NG
 
-La v. 0.0.1 de OSit QRinvent conecta directamente al motor de base de datos de OCS Inventory, MySQL, por tanto, será necesario crear un usuario específico en la BD de OCS Inventory, con permisos de lectura únicamente. Lo podremos hacer desde la shell del servidor de BBDD, conectando con el comando 'mysql' y las siguientes 2 instrucciones, deberemos indicar un usuario y una contraseña de nuestro interés.
+Como hemos comentado, la versión actual de OSit Inventory conecta directamente al motor de base de datos de OCS Inventory, a una base de datos MySQL o MariaDB, por tanto, será necesario crear un usuario específico en la BD de OCS Inventory, con permisos de lectura únicamente. Lo podremos hacer desde la shell del servidor de BBDD, conectando con el comando 'mysql' y las siguientes 2 instrucciones, deberemos indicar un usuario y una contraseña de nuestro interés.
 
     CREATE USER 'usuario_qr'@'%' IDENTIFIED BY 'CONTRASEÑA';
-    grant SELECT ON ocsweb.* to 'usuario_qr'@'%';
+    GRANT SELECT ON ocsweb.* TO 'usuario_qr'@'%';
 
-**Nota**: Si sabemos la dirección IP desde donde se van a conectar los Android, se podría indicar y no abrir a todo.
+
+**Nota**: El segundo comando permite que se pueda acceder desde cualquier dirección IP. Si queremos especificar las direcciones IP desde donde se van a conectar los dispositivos móviles, se podría indicar, bien sea un rango IP o unas cuantas direcciones IP manuales, lo haríamos sustituyendo el % por cada IP, ejemplo:
+
+    GRANT SELECT ON ocsweb.* TO 'usuario_qr'@'192.168.1.33';
+    GRANT SELECT ON ocsweb.* TO 'usuario_qr'@'192.168.1.34';
+    GRANT SELECT ON ocsweb.* TO 'usuario_qr'@'192.168.1.%';
+
 
 **Nota 2**: Desconocemos el versionado de OCS Inventory necesario, está validado con la última al escribir estas notas, 2.12.0, entendemos que será compatible con versiones anteriores y futuras.
+
+**Nota 3**: Si la primera vez, la aplicación al leer los datos nos da el error '*MySQLClientException: Auth plugin caching_sha2_password is unssupported oly with secure connections. Pass secure: true or use another auth method*' deberemos ejecutar este comando adicionalmente a los anteriores que crearon el usuario, teniendo en cuenta sustituir el % como lo hiciste antes:
+
+    ALTER USER 'usuario_qr'@'%' IDENTIFIED WITH mysql_native_password BY 'CONTRASEÑA';
 
 
 ### Configurar la app
 
-Una vez dispongamos de la app instalada en nuestro dispositivo Android, podremos configurar la conexión a MySQL desde los 3 puntos en la esquina superior derecha en la opción "DB Params",
+Una vez dispongamos de la app instalada en nuestro teléfono móvil o tablet Android o iOS, podremos configurar la conexión a MySQL/MariaDB desde los 3 puntos en la esquina superior derecha en la opción "DB Params",
 
-<img src="img/OSit-QRInvent-02.png" width="30%" height="30%">
+<img src="img/OSit-Inventory-02.png" width="30%" height="30%">
 
 Ahí deberemos establecer la dirección IP del servidor con la BD de OCS Inventory, el puerto de conexión, así como los credenciales y el nombre de la base de datos.
 
-<img src="img/OSit-QRInvent-01.png" width="30%" height="30%">
+<img src="img/OSit-Inventory-01.png" width="30%" height="30%">
 
-En las 'User Preferences', podremos configurarnos un Timeout donde especificaremos el tiempo que queremos que dure el QR en pantalla (en ms), por defecto 0, ilimitado. Así como la posibilidad de cambiar el color del tema de la app.
+En las 'User Preferences', podremos configurarnos un Timeout donde especificaremos el tiempo que queremos que duren los datos en pantalla (en segundos), por defecto 0, ilimitado. Así como la posibilidad de cambiar el color del tema de la app. O muy importante, el tamaño del texto de los resultados que verá en pantalla.
 
 ### Uso de la app
 
-<img src="img/OSit-QRInvent-03.png" width="30%" height="30%">
+#### Escaneando códigos QR
 
+<p align="center"><img src="img/osit-inventory-qr-scan-1.png" width="40%" height="40%"></p>
 
-Como sabemos ya, la finalidad de la app será escanear unos códigos QR que nos podremos auto generar y personalizar, Del QR obtendrá la palabra con el nombre de la máquina que tengamos en OCS Inventory. Será tan sencillo cómo escanear un QR.
+Como sabemos ya, una de las finalidades de la app será escanear unos códigos QR que nos podremos auto generar y personalizar. Del código QR obtendrá la palabra con el nombre de la máquina tal y como se llama en OCS Inventory. Será tan sencillo cómo escanear un QR.
+<br>
+<br>
+<p align="center"><img src="img/osit-inventory-qr-scan-2.png" width="45%" height="45%"> <img src="img/osit-inventory-qr-scan-3.png" width="45%" height="45%"></p>
 
-<img src="img/OSit-QRInvent-04.png" width="30%" height="30%">
-
-
-Y nos mostrará inmediatamente, el nombre de la máquina y unos primeros datos con la Información genérica, haciendo scroll con el dedo veremos el resto de información. Bastará con escanear otro código QR y la pantalla se actualizará automáticamente, o, podremos pulsar sobre el nombre de la máquina en la parte superior izquierda y se limpiará la pantalla.
+Y nos mostrará inmediatamente, el nombre del equipo, su dirección IP y el resto de datos del inventario hardware y software. Bastará con escanear otro código QR y la pantalla se actualizará automáticamente, o, podremos pulsar sobre el nombre de la máquina en la parte superior izquierda y se limpiará la pantalla.
+<br>
+<br>
+Tendremos la posibilidad de cambiar el tema claro/oscuro desde el botón superior de la derecha.
 
 En la parte inferior se dispone de 3 botones, uno para cambiar de cámara, otro para pausar la imagen, y el tercero para activar el flash si es que lo necesitamos.
+
+#### Escaneando etiquetas NFC
+
+<p align="center"><img src="img/osit-inventory-nfc-scan-1.png" width="45%" height="45%"> <img src="img/osit-inventory-nfc-scan-2.png" width="45%" height="45%"></p>
+
+La otra posibilidad que tenemos con la app Osit Inventory es usar la tecnología NFC para acercar una pequeña etiqueta NFC a nuestro teléfono o tablet y poder visualizar en tiempo real los datos del inventario de ese dispositivo.
+
+Para usar el NFC, pulsaremos en el icono de la esquina superior izquierda con el logo de NFC y se quitará la cámara, ya no podremos usar códigos QR, es el momento de acercar una etiqueta NFC y verlo en pantalla.
 
 ## FAQ
 
@@ -131,28 +158,36 @@ En la parte inferior se dispone de 3 botones, uno para cambiar de cámara, otro 
 
 Por ejemplo se puede usar QRCODEMONKEY: [https://www.qrcode-monkey.com](https://www.qrcode-monkey.com)
 
-Leerá cualquier tipo de diseño de un código QR de formato TEXTO.
+Leerá cualquier tipo de diseño de un código QR de formato TEXTO, donde indicaremos el nombre de la máquina en el inventario de OCS Inventory.
+
+
+### App para escribir en etiquetas NFC
+Por ejemplo se puede usar NFC Tools, tanto en Android como en iOS, permite escribir en etiquetas NFC, deberemos escribir un registro con formato texto, con el nombre de la máquina en el inventario de OCS Inventory.
 
 
 ### ¿Es seguro?
 
 Sabemos que en esto de IT no hay nada seguro, así que queda a tu elección, simplemente se ha creado un usuario con permisos de lectura en tu BD de OCS Inventory.
 
-Los códigos QR no revelan información confidencial, por lo que, si cualquier usuario (que no disponga de la app) escanea un código QR nuestro, mostrarán el nombre del dispositivo exclusivamente; los datos están en la BD.
+Los códigos QR o etiquetas NFC no revelan información confidencial, por lo que, si cualquier usuario (que no disponga de la app) escanea un código QR nuestro (o una etiqueta NFC), mostrarán el nombre del dispositivo exclusivamente; los datos están en la BD.
+
 
 ### ¿Futuro?
 
-¿Habrán nuevas versiones con nuevas funcionalidades?¿Habrán nuevas apps que hagan otras cosas molonguis? Quién sabe, alguna idea loca queda, pero... _tempus fugit_.
+Tenemos pensadas algunas ideas a futuro, nuevas funcionalidades o integraciones entre otras, si te apetece ayudar o colaborar eres más que bienvenid@
+
 
 ### Licenciamiento
 
-Cómo indicamos OSit QRinvent es gratuita y de código abierto, que podrá ser usada por cualquier persona o empresa.
+Cómo indicamos OSit Inventory es gratuita y de código abierto, que podrá ser usada por cualquier persona o empresa.
 
 Con una única condición, los proveedores de IT no tienen derecho de modificar el código de la app, ni para su uso particular, ni la de sus clientes; ni por supuesto vender la app o derivados de esta. ;-)
 
-### Descarga
 
-##### soon
+### Descarga desde los sitios oficiales
+*Google Play* (Android): https://play.google.com/store/apps/details?id=com.osit.inventoryapp
+*App Store* (iOS): https://apps.apple.com/es/app/osit-inventory/id6477826213
+
 
 ### Contacto
 
