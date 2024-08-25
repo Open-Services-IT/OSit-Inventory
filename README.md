@@ -4,11 +4,11 @@ OSit Inventory es una app gratuita que funciona en Android e iOS y permite escan
 
 OSit Inventory obtiene la información del sistema de inventario OCS Inventory NG, por tanto, si dispones de tu infraestructura inventariada (y eres feliz) podrás bajarte la app y usarla de manera gratuita en tus móviles o tablets. Es una app de código abierto, no tiene publicidad y viene sin soporte.
 
-OSit Inventory tiene una hermana gemela llamada OSit , en su caso muestra datos de monitorización en tiempo real, más info: https://github.com/Open-Services-IT/OSit-Monitor
+OSit Inventory tiene una hermana gemela llamada OSit Monitor, en su caso muestra datos de monitorización en tiempo real, más info: https://github.com/Open-Services-IT/OSit-Monitor
 
 ## Cómo funciona
 
-Es muy simple, al abrir la app directamente mostrará la cámara de tu teléfono móvil o de tu tablet, con Android o iOS, con ella escanearemos un código QR que tengamos pegado en un dispositivo inventariado con OCS Inventory. En el momento de leer el código QR mostrará en pantalla un inventario completo con todo el hardware y el software del equipo escaneado. Y si preferimos escanear una etiqueta NFC, bastará con pulsar el icono del NFC en la app y se quitará la cámara y quedará listo para acercar nuestro dispositivo móvil a la etiqueta NFC y ver los datos en pantalla.
+Es muy simple, al abrir la app directamente mostrará la cámara del dispositivo (móvil o tablet), con Android o iOS, con ella escanearemos un código QR que tengamos pegado en un dispositivo inventariado con OCS Inventory. En el momento de leer el código QR mostrará en pantalla un inventario completo con todo el hardware y el software del equipo escaneado. Y si preferimos escanear una etiqueta NFC, bastará con pulsar el icono del NFC en la app y se quitará la cámara y quedará listo para acercar nuestro dispositivo móvil a la etiqueta NFC y ver los datos en pantalla.
 
 ## Qué necesitamos
 
@@ -100,14 +100,14 @@ Como hemos comentado, la versión actual de OSit Inventory conecta directamente 
     GRANT SELECT ON ocsweb.* TO 'readonly'@'%';
 
 
-**Nota**: El segundo comando permite que se pueda acceder desde cualquier dirección IP. Si queremos especificar las direcciones IP desde donde se van a conectar los dispositivos móviles, se podría indicar, bien sea un rango IP o unas cuantas direcciones IP manuales, lo haríamos sustituyendo el % por cada IP, ejemplo:
+**Nota**: El segundo comando, debido al símbolo del %, permite que se pueda acceder desde cualquier dirección IP. Si queremos especificar las direcciones IP desde donde se van a conectar los dispositivos móviles, se podría indicar, bien sea un rango IP o unas cuantas direcciones IP estáticas, lo haríamos sustituyendo el % por cada IP, ejemplo:
 
     GRANT SELECT ON ocsweb.* TO 'readonly'@'192.168.1.33';
     GRANT SELECT ON ocsweb.* TO 'readonly'@'192.168.1.34';
-    GRANT SELECT ON ocsweb.* TO 'readonly'@'192.168.1.%';
+    GRANT SELECT ON ocsweb.* TO 'readonly'@'192.168.1.0/255.255.255.0';
 
 
-**Nota 2**: Desconocemos el versionado de OCS Inventory necesario, está validado con la última al escribir estas notas, 2.12.0, entendemos que será compatible con versiones anteriores y futuras.
+**Nota 2**: Desconocemos el versionado de OCS Inventory necesario, está validado con la última al escribir estas notas, 2.12, entendemos que será compatible con versiones anteriores y futuras.
 
 **Nota 3**: Si la primera vez, la aplicación al leer los datos nos da el error '*MySQLClientException: Auth plugin caching_sha2_password is unssupported oly with secure connections. Pass secure: true or use another auth method*' deberemos ejecutar este comando adicionalmente a los anteriores que crearon el usuario, teniendo en cuenta sustituir el % como lo hiciste antes:
 
@@ -171,6 +171,8 @@ Sabemos que en esto de IT no hay nada seguro, así que queda a tu elección, sim
 
 Los códigos QR o etiquetas NFC no revelan información confidencial, por lo que, si cualquier usuario (que no disponga de la app) escanea un código QR nuestro (o una etiqueta NFC), mostrarán el nombre del dispositivo exclusivamente; los datos están en la BD.
 
+El uso debe ser local, tu dispositivo móvil se conectará a la BD de OCS Inventory, todo tráfico interno en tu organización, obviamente ni se te ocurra abrir la BD de OCS Inventory a Internet.
+
 
 ### ¿Futuro?
 
@@ -185,8 +187,8 @@ Con una única condición, los proveedores de IT no tienen derecho de modificar 
 
 
 ### Descarga desde los sitios oficiales
-**Google Play** (Android): https://play.google.com/store/apps/details?id=com.osit.inventoryapp
-<br>**App Store** (iOS): https://apps.apple.com/es/app/osit-inventory/id6477826213
+**Google Play** (Android): https://play.google.com/store/apps/details?id=com.osit.inventoryapp \
+**App Store** (iOS): https://apps.apple.com/es/app/osit-inventory/id6477826213
 
 
 ### Contacto
