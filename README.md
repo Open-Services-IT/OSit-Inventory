@@ -118,11 +118,11 @@ Como hemos comentado, la versión actual de OSit Inventory conecta directamente 
 
 Una vez dispongamos de la app instalada en nuestro teléfono móvil o tablet Android o iOS, podremos configurar la conexión a MySQL/MariaDB desde los 3 puntos en la esquina superior derecha en la opción "DB Params",
 
-<img src="img/OSit-Inventory-02.png" width="30%" height="30%">
+<p align="center"><img src="img/osit-inventory-conf.png" width="30%" height="30%"></p>
 
 Ahí deberemos establecer la dirección IP del servidor con la BD de OCS Inventory, el puerto de conexión, así como los credenciales y el nombre de la base de datos.
 
-<img src="img/OSit-Inventory-01.png" width="30%" height="30%">
+<p align="center"><img src="img/osit-inventory-preferences.png" width="30%" height="30%"></p>
 
 En las 'User Preferences', podremos configurarnos un Timeout donde especificaremos el tiempo que queremos que duren los datos en pantalla (en segundos), por defecto 0, ilimitado. Así como la posibilidad de cambiar el color del tema de la app. O muy importante, el tamaño del texto de los resultados que verá en pantalla.
 
@@ -185,10 +185,10 @@ Con una única condición, los proveedores de IT no tienen derecho de modificar 
 
 
 ### Descarga desde los sitios oficiales
-*Google Play* (Android): https://play.google.com/store/apps/details?id=com.osit.inventoryapp
-*App Store* (iOS): https://apps.apple.com/es/app/osit-inventory/id6477826213
+**Google Play** (Android): https://play.google.com/store/apps/details?id=com.osit.inventoryapp
+<br>**App Store** (iOS): https://apps.apple.com/es/app/osit-inventory/id6477826213
 
 
 ### Contacto
 
-Estamos en https://www.openservices.eus
+Para lo que necesites, estamos en https://www.openservices.eus
