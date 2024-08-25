@@ -26,68 +26,68 @@ La versión inicial de OSit Inventory sólo permite conectar a OCS Inventory med
 Como indicamos, al escanear un código QR o una etiqueta NFC se mostrará en pantalla todo el hardware y software de dicha máquina. Gracias a OCS Inventory NG sabemos que podemos tener un inventario actualizado de cualquier componente hardware o software instalado en nuestras máquinas, pues ahora, lo podemos ver en tiempo real y desde cualquier sitio, delante de un equipo, de un servidor y conocer cualquier detalle que necesitemos de su hardware, como pueda ser qué discos tiene, su capacidad, su número de serie, o cuántos módulos de memoria RAM tiene ocupados, o si tiene un software instalado y qué versión.
 
 - Información genérica:
-- Nombre del equipo.
-- Dirección IP.
-- Sistema Operativo.
-- Compilación del S.O.
-- Usuario conectado.
-- Clave de Windows.
-- Versión del agente de inventario.
-- Fecha del último inventario.
-- Fecha del último contacto.
+  - Nombre del equipo.
+  - Dirección IP.
+  - Sistema Operativo.
+  - Compilación del S.O.
+  - Usuario conectado.
+  - Clave de Windows.
+  - Versión del agente de inventario.
+  - Fecha del último inventario.
+  - Fecha del último contacto.
 - Fabricante:
-- Fabricante.
-- Modelo.
-- Nº de serie.
-- Versión de la BIOS.
-- Fecha de la BIOS.
+  - Nombre del fabricante.
+  - Modelo.
+  - Nº de serie.
+  - Versión de la BIOS.
+  - Fecha de la BIOS.
 - Procesador:
-- Procesador.
-- Nº de procesadores.
-- Nº de cores.
+  - Procesador.
+  - Nº de procesadores.
+  - Nº de cores.
 - Memoria:
-- Memoria total.
-- Slots ocupados.
-- Slots libres.
-- Almacenamiento:
+  - Memoria total.
+  - Slots ocupados.
+  - Slots libres.
+  - Almacenamiento:
 - Disco:
-- Capacidad.
-- Versión del firmware.
+  - Capacidad.
+  - Versión del firmware.
 - Unidades:
-- Letra de unidad.
-- Sistema de archivos.
-- Espacio libre.
-- Espacio ocupado.
+  - Letra de unidad.
+  - Sistema de archivos.
+  - Espacio libre.
+  - Espacio ocupado.
 - Controladoras:
-- Controladora.
-- Fabricante.
-- Tipo de controladora.
+  - Controladora.
+  - Fabricante.
+  - Tipo de controladora.
 - Adaptadores de red:
-- Nombre del adaptador.
-- Dirección MAC.
-- Dirección IP.
-- Máscada de red.
-- Puerta de enlace.
-- Servidor DHCP.
-*   Tarjetas gráficas:
-- Modelo.
-- Memoria.
-- Resolución.
-*   es:
-- Modelo.
-- Número de serie.
-- Tipo .
-- Descripción.
-*   Impresoras:
-- Nombre de impresora.
-- Driver.
-- Puerto.
-- Compartida.
-- Impresora de red.
-*   Software instalado:
-- Nombre del software.
-- Fabricante del software.
-- Versión del software.
+  - Nombre del adaptador.
+  - Dirección MAC.
+  - Dirección IP.
+  - Máscada de red.
+  - Puerta de enlace.
+  - Servidor DHCP.
+- Tarjetas gráficas:
+  - Modelo.
+  - Memoria.
+  - Resolución.
+- Tarjetas de sonido:
+  - Modelo.
+  - Número de serie.
+  - Tipo.
+  - Descripción.
+- Impresoras:
+  - Nombre de impresora.
+  - Driver.
+  - Puerto.
+  - Compartida.
+  - Impresora de red.
+- Software instalado:
+  - Nombre del software.
+  - Fabricante del software.
+  - Versión del software.
 
 
 ## Wiki
@@ -96,22 +96,22 @@ Como indicamos, al escanear un código QR o una etiqueta NFC se mostrará en pan
 
 Como hemos comentado, la versión actual de OSit Inventory conecta directamente al motor de base de datos de OCS Inventory, a una base de datos MySQL o MariaDB, por tanto, será necesario crear un usuario específico en la BD de OCS Inventory, con permisos de lectura únicamente. Lo podremos hacer desde la shell del servidor de BBDD, conectando con el comando 'mysql' y las siguientes 2 instrucciones, deberemos indicar un usuario y una contraseña de nuestro interés.
 
-    CREATE USER 'usuario_qr'@'%' IDENTIFIED BY 'CONTRASEÑA';
-    GRANT SELECT ON ocsweb.* TO 'usuario_qr'@'%';
+    CREATE USER 'readonly'@'%' IDENTIFIED BY 'CONTRASEÑA';
+    GRANT SELECT ON ocsweb.* TO 'readonly'@'%';
 
 
 **Nota**: El segundo comando permite que se pueda acceder desde cualquier dirección IP. Si queremos especificar las direcciones IP desde donde se van a conectar los dispositivos móviles, se podría indicar, bien sea un rango IP o unas cuantas direcciones IP manuales, lo haríamos sustituyendo el % por cada IP, ejemplo:
 
-    GRANT SELECT ON ocsweb.* TO 'usuario_qr'@'192.168.1.33';
-    GRANT SELECT ON ocsweb.* TO 'usuario_qr'@'192.168.1.34';
-    GRANT SELECT ON ocsweb.* TO 'usuario_qr'@'192.168.1.%';
+    GRANT SELECT ON ocsweb.* TO 'readonly'@'192.168.1.33';
+    GRANT SELECT ON ocsweb.* TO 'readonly'@'192.168.1.34';
+    GRANT SELECT ON ocsweb.* TO 'readonly'@'192.168.1.%';
 
 
 **Nota 2**: Desconocemos el versionado de OCS Inventory necesario, está validado con la última al escribir estas notas, 2.12.0, entendemos que será compatible con versiones anteriores y futuras.
 
 **Nota 3**: Si la primera vez, la aplicación al leer los datos nos da el error '*MySQLClientException: Auth plugin caching_sha2_password is unssupported oly with secure connections. Pass secure: true or use another auth method*' deberemos ejecutar este comando adicionalmente a los anteriores que crearon el usuario, teniendo en cuenta sustituir el % como lo hiciste antes:
 
-    ALTER USER 'usuario_qr'@'%' IDENTIFIED WITH mysql_native_password BY 'CONTRASEÑA';
+    ALTER USER 'readonly'@'%' IDENTIFIED WITH mysql_native_password BY 'CONTRASEÑA';
 
 
 ### Configurar la app
@@ -174,14 +174,14 @@ Los códigos QR o etiquetas NFC no revelan información confidencial, por lo que
 
 ### ¿Futuro?
 
-Tenemos pensadas algunas ideas a futuro, nuevas funcionalidades o integraciones entre otras, si te apetece ayudar o colaborar eres más que bienvenid@
+Tenemos pensadas algunas ideas a futuro, nuevas funcionalidades o integraciones entre otras, si te apetece ayudar o colaborar eres más que bienvenid@.
 
 
 ### Licenciamiento
 
 Cómo indicamos OSit Inventory es gratuita y de código abierto, que podrá ser usada por cualquier persona o empresa.
 
-Con una única condición, los proveedores de IT no tienen derecho de modificar el código de la app, ni para su uso particular, ni la de sus clientes; ni por supuesto vender la app o derivados de esta. ;-)
+Con una única condición, los proveedores de IT no tienen derecho de modificar el código de la app, ni para su uso particular, ni la de sus clientes; ni por supuesto vender la app o derivados de esta. :stuck_out_tongue_winking_eye:
 
 
 ### Descarga desde los sitios oficiales
